@@ -38,5 +38,14 @@
 		</plugins>
 		<finalName>springboot-k8s-demo</finalName>
 	</build>
+	
+	<distributionManagement>
+  		<repository>
+    			<id>mytestdomain-mytestrepo</id>
+    			<name>mytestdomain-mytestrepo</name>
+    			<url>https://mytestdomain-449814511849.d.codeartifact.us-west-2.amazonaws.com/maven/mytestrepo/</url>
+  		</repository>
+	</distributionManagement>
+
 
 </project>

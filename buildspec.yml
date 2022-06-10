@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  pre_build:
+    commands:
+     - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain mytestdomain --domain-owner 449814511849 --query authorizationToken --output text`
+    commands:
+      - mvn --no-transfer-progress versions:set -DnewVersion=$STAMP
+      - mvn --no-transfer-progress -s settings.xml clean package deploy
+artifacts:
+  files:
+    - target/springboot-k8s-demo.jar
+  name: springboot-k8s-demo.jar

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+
+  <profiles>
+    <profile>
+      <id>mytestdomain-mytestrepo</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>mytestdomain-mytestrepo</id>
+          <url>https://mytestdomain-449814511849.d.codeartifact.us-west-2.amazonaws.com/maven/mytestrepo/</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <servers>
+    <server>
+      <id>mytestdomain-mytestrepo</id>
+      <username>aws</username>
+      <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
+    </server>
+  </servers>
+  
+  <mirrors>
+    <mirror>
+      <id>mytestdomain-mytestrepo</id>
+      <name>mytestdomain-mytestrepo</name>
+      <url>https://mytestdomain-449814511849.d.codeartifact.us-west-2.amazonaws.com/maven/mytestrepo/</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
+</settings>

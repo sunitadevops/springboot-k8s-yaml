@@ -11,7 +11,6 @@ phases:
     - IMAGE_TAG=${COMMIT_HASH:=latest}
     - REPOSITORY_URI=449814511849.dkr.ecr.us-west-2.amazonaws.com/todoapp
     - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain mytestdomain --domain-owner 449814511849 --query authorizationToken --output text`
-    - mvn --no-transfer-progress versions:set -DnewVersion=$STAMP
     - mvn --no-transfer-progress -s settings.xml clean package deploy
   build: 
     commands: 

@@ -30,13 +30,7 @@
 	</dependencies>
 	
 	
-	<groupId>com.brcolow.codeartifact</groupId>
-    	<artifactId>codeartifact-maven-extension</artifactId>
-    	<version>0.1-SNAPSHOT</version>
-
-    	<name>AWS CodeArtifact Maven Extension</name>
-    	<description>Automatically retrieves CodeArtifact authentication tokens and uses Codeartifact as your remote repository.</description>
-
+	
 	<build>
 		<plugins>
 			<plugin>

@@ -1,23 +1,18 @@
 version: 0.2
 phases: 
-  install:
-    runtime-versions:
-        docker: 18     
-   
   pre_build: 
     commands: 
     - echo Logging in to Amazon ECR.... 
     - aws --version
     # update the following line with your own region
+    # - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
     - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 449814511849.dkr.ecr.us-west-2.amazonaws.com
     - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
     - IMAGE_TAG=${COMMIT_HASH:=latest}
     - REPOSITORY_URI=449814511849.dkr.ecr.us-west-2.amazonaws.com/todoapp
-    commands:
-     - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain mytestdomain --domain-owner 449814511849 --query authorizationToken --output text`
-    commands:
-      - mvn --no-transfer-progress versions:set -DnewVersion=$STAMP
-      - mvn --no-transfer-progress -s settings.xml clean package deploy
+    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain mytestdomain --domain-owner 449814511849 --query authorizationToken --output text`
+    - mvn --no-transfer-progress versions:set -DnewVersion=$STAMP
+    - mvn --no-transfer-progress -s settings.xml clean package deploy
   build: 
     commands: 
     - echo Build started on `date` 

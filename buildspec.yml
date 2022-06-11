@@ -1,16 +1,35 @@
 version: 0.2
-
-phases:
+phases: 
   install:
     runtime-versions:
-      java: corretto11
-  pre_build:
+        docker: 18     
+   
+  pre_build: 
+    commands: 
+    - echo Logging in to Amazon ECR.... 
+    - aws --version
+    # update the following line with your own region
+    - aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 449814511849.dkr.ecr.us-west-2.amazonaws.com
+    - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+    - IMAGE_TAG=${COMMIT_HASH:=latest}
+    - REPOSITORY_URI=449814511849.dkr.ecr.us-west-2.amazonaws.com/todoapp
     commands:
      - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain mytestdomain --domain-owner 449814511849 --query authorizationToken --output text`
     commands:
       - mvn --no-transfer-progress versions:set -DnewVersion=$STAMP
       - mvn --no-transfer-progress -s settings.xml clean package deploy
-artifacts:
-  files:
-    - target/springboot-k8s-demo.jar
-  name: springboot-k8s-demo.jar
+  build: 
+    commands: 
+    - echo Build started on `date` 
+    - echo Building the Docker image... 
+    # update the following line with the name of your own ECR repository
+    - docker build -t $REPOSITORY_URI:latest .
+    # update the following line with the URI of your own ECR repository (view the Push Commands in the console)
+    - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG 
+  post_build: 
+    commands: 
+    - echo Build completed on `date` 
+    - echo pushing to repo
+    # update the following line with the URI of your own ECR repository
+    - docker push $REPOSITORY_URI:latest
+    - docker push $REPOSITORY_URI:$IMAGE_TAG
